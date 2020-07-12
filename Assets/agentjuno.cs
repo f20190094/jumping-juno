@@ -13,6 +13,7 @@ public class agentjuno : Agent
     public float jumpstrength = 5f;
     public float sidespeed = 5f;
     private bool cubeonground = true;
+    public bool crossedloop = false;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -44,8 +45,18 @@ public class agentjuno : Agent
         }
         sidemove(vectorAction[1]);
         forwardmove(vectorAction[2]);
+
+        if (crossedloop && !cubeonground)
+        {
+            SetReward(1.0f);
+        }
+
+        if (this.transform.localPosition.y < 0)
+        {
+            EndEpisode();
+        }
     }
-     void jump()
+    void jump()
     {
         if (cubeonground)
         {
@@ -59,16 +70,32 @@ public class agentjuno : Agent
         if (collision.gameObject.name == "floor")
         {
             cubeonground = true;
+            crossedloop = false;
         }
     }
 
     void sidemove(float numure)
     {
         numure--;
-        this.transform.Translate(sidespeed * numure*Time.deltaTime, 0, 0, Space.Self);
+        this.transform.Translate(sidespeed * numure * Time.deltaTime, 0, 0, Space.Self);
     }
     void forwardmove(float numure)
     {
         this.transform.Translate(0, 0, numure * Time.deltaTime * sidespeed, Space.Self);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name == "trigger")
+        {
+            crossedloop = true;
+        }
+    }
+
+    public override void Heuristic(float[] actionsOut)
+    {
+        actionsOut[0] = Input.GetAxis("Jump");
+        actionsOut[1] = Input.GetAxis("Horizontal");
+        actionsOut[2] = Input.GetAxis("Vertical");
     }
 }
