@@ -21,7 +21,8 @@ public class agentjuno : Agent
 
     public override void OnEpisodeBegin()
     {
-        this.transform.localPosition = new Vector3(-0.5f, 0.5f, 3.5f);
+        this.transform.localPosition = new Vector3(0.5f, 0.5f, 3.5f);
+        this.transform.localEulerAngles = new Vector3(0, 180, 0);
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -76,12 +77,26 @@ public class agentjuno : Agent
 
     void sidemove(float numure)
     {
-        numure--;
-        this.transform.Translate(sidespeed * numure * Time.deltaTime, 0, 0, Space.Self);
+        if (numure == 2)
+        {
+            this.transform.Translate(sidespeed * Time.deltaTime, 0, 0, Space.Self);
+        }
+        else
+        {
+            this.transform.Translate(-numure*sidespeed * Time.deltaTime, 0, 0, Space.Self);
+        }
     }
     void forwardmove(float numure)
     {
-        this.transform.Translate(0, 0, numure * Time.deltaTime * sidespeed, Space.Self);
+        if(numure == 2)
+        {
+            this.transform.Translate(0, 0, Time.deltaTime * sidespeed, Space.Self);
+        }
+        else
+        {
+            this.transform.Translate(0, 0, -numure * Time.deltaTime * sidespeed, Space.Self);
+        }
+        
     }
 
     private void OnTriggerEnter(Collider other)
