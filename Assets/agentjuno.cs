@@ -46,12 +46,17 @@ public class agentjuno : Agent
         {
             jump();
         }
-        sidemove(vectorAction[1]);
         forwardmove(vectorAction[2]);
+        
+        if (!isjumping)
+        {
+            sidemove(vectorAction[1]);
+        }
 
-        if (crossedloop && !cubeonground && hitpad)
+        if (crossedloop && hitpad)
         {
             SetReward(1.0f);
+            hitpad = false;
         }
 
         if (this.transform.localPosition.y < 0)
