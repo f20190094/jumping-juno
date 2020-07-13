@@ -12,8 +12,10 @@ public class agentjuno : Agent
     public float speed = 10f;
     public float jumpstrength = 5f;
     public float sidespeed = 5f;
-    private bool cubeonground = true;
+    public bool cubeonground = true;
     public bool crossedloop = false;
+    public bool hitpad = false;
+    public bool isjumping = false;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -47,7 +49,7 @@ public class agentjuno : Agent
         sidemove(vectorAction[1]);
         forwardmove(vectorAction[2]);
 
-        if (crossedloop && !cubeonground)
+        if (crossedloop && !cubeonground && hitpad)
         {
             SetReward(1.0f);
         }
@@ -63,6 +65,7 @@ public class agentjuno : Agent
         {
             rb.AddForce(new Vector3(0, jumpstrength, 0), ForceMode.Impulse);
             cubeonground = false;
+            isjumping = true;
         }
     }
 
@@ -72,6 +75,21 @@ public class agentjuno : Agent
         {
             cubeonground = true;
             crossedloop = false;
+            hitpad = false;
+            isjumping = false;
+        }
+
+        if (collision.gameObject.name == "landpad")
+        {
+            if (!hitpad && isjumping)
+            {
+                hitpad = true;
+                isjumping = false;
+            }
+            else
+            {
+                hitpad = false;
+            }
         }
     }
 
