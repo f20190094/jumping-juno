@@ -119,7 +119,7 @@ public class agentjuno : Agent
         {
             this.transform.Translate(0, 0, -numure * Time.deltaTime * sidespeed, Space.Self);
         }
-        
+        //change
     }
 
     private void OnTriggerEnter(Collider other)
