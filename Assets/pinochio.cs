@@ -13,6 +13,7 @@ public class pinochio : Agent
     public butt BU;
     public Transform target;
     public Transform ring;
+    public Transform butto;
     public float speed = 10f;
     public float jumpstrength = 5f;
     public float sidespeed = 5f;
@@ -41,7 +42,8 @@ public class pinochio : Agent
         sensor.AddObservation(this.transform.localEulerAngles);//3
         sensor.AddObservation(ring.transform.localPosition);//3
         sensor.AddObservation(BU.getmaterial());//1
-        
+        sensor.AddObservation(butto.transform.localPosition);//3
+
     }
     /// <summary>
     /// 0 is for jump
