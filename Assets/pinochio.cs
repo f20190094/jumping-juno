@@ -5,6 +5,7 @@ using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using System;
 using Unity.Mathematics;
+using UnityEngine.ProBuilder;
 
 public class pinochio : Agent
 {
@@ -22,6 +23,8 @@ public class pinochio : Agent
     public bool hitpad = false;
     public bool isjumping = false;
     public bool buttonpressed = false;
+    private float smoothyawchange = 0f;
+    public float yawspeed = 100f;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -32,6 +35,7 @@ public class pinochio : Agent
         this.transform.localPosition = new Vector3(0.5f, 0.5f, 3.5f);
         this.transform.localEulerAngles = new Vector3(0, 180, 0);
         ring.transform.localPosition = new Vector3(5.51f - UnityEngine.Random.value*6, 2.31f + UnityEngine.Random.value*3, 0);
+        BU.meterialstart();
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -60,11 +64,13 @@ public class pinochio : Agent
         {
             jump();
         }*/
-        jump(Math.Abs(vectorAction[0]));
+        jump(System.Math.Abs(vectorAction[0]));
+
+        moveleft(vectorAction[1]);
 
         forwardmove(vectorAction[2]);
 
-        moveleft(vectorAction[1]);
+        yaw_change(vectorAction[3]);
 
         chekcbutton();
 
@@ -74,6 +80,17 @@ public class pinochio : Agent
         {
             EndEpisode();
         }
+    }
+
+    private void yaw_change(float v)
+    {
+        Vector3 rotaionvector = transform.rotation.eulerAngles;
+
+        smoothyawchange = Mathf.MoveTowards(smoothyawchange, v, 2f * Time.fixedDeltaTime);
+
+        float yaw = rotaionvector.y + smoothyawchange * Time.fixedDeltaTime * yawspeed;
+
+        transform.rotation = Quaternion.Euler(0, yaw, 0);
     }
 
     private void rewardsequence()
@@ -169,8 +186,14 @@ public class pinochio : Agent
 
     public override void Heuristic(float[] actionsOut)//todo change this too acc to code
     {
+        float yaw = 0f;
+
+        if (Input.GetKey(KeyCode.Q)) yaw = -1f;
+        else if (Input.GetKey(KeyCode.E)) yaw = 1f;
+
         actionsOut[0] = Input.GetAxis("Jump");
         actionsOut[1] = Input.GetAxis("Horizontal");
         actionsOut[2] = Input.GetAxis("Vertical");
+        actionsOut[3] = yaw;
     }
 }

@@ -13,6 +13,11 @@ public class butt : MonoBehaviour
     {
         rend = GetComponent<Renderer>();
         rend.enabled = true;
+        //meterialstart();
+    }
+
+    public void meterialstart()
+    {
         rend.sharedMaterial = material[0];
     }
 
