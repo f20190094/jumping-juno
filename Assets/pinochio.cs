@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using System;
+using Unity.Mathematics;
 
 public class pinochio : Agent
 {
@@ -56,22 +57,40 @@ public class pinochio : Agent
             jump();
         }*/
         jump(Math.Abs(vectorAction[0]));
-        
+
         forwardmove(vectorAction[2]);
 
         moveleft(vectorAction[1]);
-        
-        
-        if (crossedloop && hitpad && BU.getmaterial()==1)
-        {
 
-            SetReward(1.0f);
-            hitpad = false;
-        }
+        chekcbutton();
+
+        rewardsequence();
 
         if (this.transform.localPosition.y < 0)
         {
             EndEpisode();
+        }
+    }
+
+    private void rewardsequence()
+    {
+        if (crossedloop && hitpad && BU.getmaterial() == 0)
+        {
+            SetReward(1.0f);
+            hitpad = false;
+            buttonpressed = false;
+        }
+    }
+
+    private void chekcbutton()
+    {
+        if (BU.getmaterial() == 1)
+        {
+            buttonpressed = false;
+        }
+        else if (BU.getmaterial() == 0)
+        {
+            buttonpressed = true;
         }
     }
 
@@ -87,7 +106,7 @@ public class pinochio : Agent
 
     void jump(float numure)
     {
-        if (cubeonground)
+        if (cubeonground && numure > 0.8)
         {
             rb.AddForce(new Vector3(0, numure*jumpstrength, 0), ForceMode.Impulse);
             cubeonground = false;
@@ -107,18 +126,11 @@ public class pinochio : Agent
 
         if (collision.gameObject.name == "landpad")
         {
-            if (!hitpad && isjumping)
-            {
-                hitpad = true;
-                isjumping = false;
-            }
-            else
-            {
-                hitpad = false;
-            }
+            hitpad = true;
+            isjumping = false;
+            buttonpressed = false;
         }
     }
-
     /*void sidemove(float numure)
     {
         if (numure == 2)

@@ -8,6 +8,7 @@ public class butt : MonoBehaviour
     // Start is called before the first frame update
     public Material[] material;
     Renderer rend;
+    public pinochio pino;
     void Start()
     {
         rend = GetComponent<Renderer>();
@@ -20,6 +21,7 @@ public class butt : MonoBehaviour
         if (collision.gameObject.name=="agent pino")
         {
             rend.sharedMaterial = material[1];
+            pino.buttonpressed = true;
         }
     }
      public int getmaterial()
@@ -31,6 +33,13 @@ public class butt : MonoBehaviour
         else
         {
             return 0;
+        }
+    }
+    private void Update()
+    {
+        if (pino.buttonpressed == false)
+        {
+            rend.sharedMaterial = material[0];
         }
     }
 }
