@@ -22,15 +22,15 @@ public class butt : MonoBehaviour
             rend.sharedMaterial = material[1];
         }
     }
-     public float getmaterial()
+     public int getmaterial()
     {
         if (rend.sharedMaterial == material[0])
         {
-            return 1f;
+            return 1;
         }
         else
         {
-            return 0f;
+            return 0;
         }
     }
 }

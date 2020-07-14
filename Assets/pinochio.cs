@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
+using System;
+
 public class pinochio : Agent
 {
     // Start is called before the first frame update
@@ -17,6 +19,7 @@ public class pinochio : Agent
     public bool crossedloop = false;
     public bool hitpad = false;
     public bool isjumping = false;
+    public bool buttonpressed = false;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -40,25 +43,28 @@ public class pinochio : Agent
     }
     /// <summary>
     /// 0 is for jump
-    /// 1 is for side movement
+    /// 1 is for left movement
+    ///
     /// 2 is for forward movement
+    /// 
     /// </summary>
     /// <param name="vectorAction"></param>
     public override void OnActionReceived(float[] vectorAction)
     {
-        if (vectorAction[0] == 1)
+        /*if (vectorAction[0] == 1)
         {
             jump();
-        }
+        }*/
+        jump(Math.Abs(vectorAction[0]));
+        
         forwardmove(vectorAction[2]);
 
-        if (!isjumping)
+        moveleft(vectorAction[1]);
+        
+        
+        if (crossedloop && hitpad && BU.getmaterial()==1)
         {
-            sidemove(vectorAction[1]);
-        }
 
-        if (crossedloop && hitpad)
-        {
             SetReward(1.0f);
             hitpad = false;
         }
@@ -68,11 +74,22 @@ public class pinochio : Agent
             EndEpisode();
         }
     }
-    void jump()
+
+    /*private void moveright(float v)
+    {
+        this.transform.Translate(sidespeed * Time.deltaTime, 0, 0, Space.Self);
+    }*/
+
+    private void moveleft(float v)
+    {
+        this.transform.Translate(v*sidespeed * Time.deltaTime, 0, 0, Space.Self);
+    }
+
+    void jump(float numure)
     {
         if (cubeonground)
         {
-            rb.AddForce(new Vector3(0, jumpstrength, 0), ForceMode.Impulse);
+            rb.AddForce(new Vector3(0, numure*jumpstrength, 0), ForceMode.Impulse);
             cubeonground = false;
             isjumping = true;
         }
@@ -102,7 +119,7 @@ public class pinochio : Agent
         }
     }
 
-    void sidemove(float numure)
+    /*void sidemove(float numure)
     {
         if (numure == 2)
         {
@@ -112,29 +129,29 @@ public class pinochio : Agent
         {
             this.transform.Translate(-numure * sidespeed * Time.deltaTime, 0, 0, Space.Self);
         }
-    }
+    }*/
     void forwardmove(float numure)
     {
-        if (numure == 2)
+        /*if (numure == 2)
         {
             this.transform.Translate(0, 0, Time.deltaTime * sidespeed, Space.Self);
         }
         else
         {
             this.transform.Translate(0, 0, -numure * Time.deltaTime * sidespeed, Space.Self);
-        }
-        //cga
+        }*/
+        this.transform.Translate(0, 0, numure*Time.deltaTime * sidespeed, Space.Self);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name == "trigger")
+        if (other.gameObject.name == "trig")
         {
             crossedloop = true;
         }
     }
 
-    public override void Heuristic(float[] actionsOut)
+    public override void Heuristic(float[] actionsOut)//todo change this too acc to code
     {
         actionsOut[0] = Input.GetAxis("Jump");
         actionsOut[1] = Input.GetAxis("Horizontal");
