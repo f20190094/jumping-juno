@@ -30,6 +30,7 @@ public class pinochio : Agent
     {
         this.transform.localPosition = new Vector3(0.5f, 0.5f, 3.5f);
         this.transform.localEulerAngles = new Vector3(0, 180, 0);
+        ring.transform.localPosition = new Vector3(5.51f - UnityEngine.Random.value*6, 2.31f + UnityEngine.Random.value*3, 0);
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -52,7 +53,8 @@ public class pinochio : Agent
     /// <param name="vectorAction"></param>
     public override void OnActionReceived(float[] vectorAction)
     {
-        /*if (vectorAction[0] == 1)
+        /*
+        if (vectorAction[0] == 1)
         {
             jump();
         }*/
@@ -106,7 +108,7 @@ public class pinochio : Agent
 
     void jump(float numure)
     {
-        if (cubeonground && numure > 0.8)
+        if (cubeonground && numure >0.5)
         {
             rb.AddForce(new Vector3(0, numure*jumpstrength, 0), ForceMode.Impulse);
             cubeonground = false;
