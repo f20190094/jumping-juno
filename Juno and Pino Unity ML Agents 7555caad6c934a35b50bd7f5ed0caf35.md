@@ -13,7 +13,7 @@ To jump over the rod and land on the landing-pad without touching the floor.
 - Position and scale of the landing pad
 - Position and rotation of the agent
 
-[Juno%20and%20Pino%20Unity%20ML%20Agents%207555caad6c934a35b50bd7f5ed0caf35/Screenshot_(198).png](Juno%20and%20Pino%20Unity%20ML%20Agents%207555caad6c934a35b50bd7f5ed0caf35/Screenshot_(198).png)
+[Juno%20and%20Pino%20Unity%20ML%20Agents%207555caad6c934a35b50bd7f5ed0caf35/Screenshot_(198).img](Juno%20and%20Pino%20Unity%20ML%20Agents%207555caad6c934a35b50bd7f5ed0caf35/Screenshot_(198).img)
 
 ## PINO
 
@@ -28,4 +28,4 @@ To press the button and jump through the loop on the landing-pad without touchin
 - Position of the button.
 - Color of the button.
 
-[Juno%20and%20Pino%20Unity%20ML%20Agents%207555caad6c934a35b50bd7f5ed0caf35/Screenshot_(199).png](Juno%20and%20Pino%20Unity%20ML%20Agents%207555caad6c934a35b50bd7f5ed0caf35/Screenshot_(199).png)
+[Juno%20and%20Pino%20Unity%20ML%20Agents%207555caad6c934a35b50bd7f5ed0caf35/Screenshot_(199).img](Juno%20and%20Pino%20Unity%20ML%20Agents%207555caad6c934a35b50bd7f5ed0caf35/Screenshot_(199).img)
